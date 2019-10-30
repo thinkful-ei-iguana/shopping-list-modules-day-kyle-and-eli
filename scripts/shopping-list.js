@@ -1,8 +1,5 @@
-const store = {
-  items: [],
-  hideCheckedItems: false
-};
-
+import item from './item.js';
+import store from './store.js';
 const generateItemElement = function (item) {
   let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
   if (!item.checked) {
@@ -45,7 +42,15 @@ const render = function () {
 };
 
 const addItemToShoppingList = function (itemName) {
-  store.items.push({ id: cuid(), name: itemName, checked: false });
+try{
+  item.validateName(itemName);
+  let createdItem = item.create(itemName);
+  store.items.push(createdItem);
+  render();
+}
+catch (error) {
+  console.log(`Cannot add item: ${error.message}`);
+}
 };
 
 const handleNewItemSubmit = function () {
